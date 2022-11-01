@@ -28,7 +28,6 @@ func constructor{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr
     owner.write(_owner);
     let (timestamp) = get_block_timestamp();
     balance.write(timestamp);
-    solved.write(1);
     return ();
 }
 
