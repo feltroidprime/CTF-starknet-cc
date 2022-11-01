@@ -5,13 +5,11 @@ from starknet_py.net.networks import TESTNET
 from starknet_py.net import AccountClient, KeyPair
 from starknet_py.contract import Contract
 from starknet_py.net.models.chains import StarknetChainId
-uuid = '18f560a1-2c7f-41c8-9333-545b95b486c9'
-rpc_endpoint = 'http://18f560a1-2c7f-41c8-9333-545b95b486c9@18.157.198.111:5060'
-private_key = 0xfa7ffc884bf5d72df8c58dc098b98f31
-player_address = 0x5816110afbcef8e7ef68bbe9d87871b5aa98cf01c0ba056abd443459ba3f674
-contract_address = 0x599df3c1c72d303ba92294265f2ad94aa56e4780f8e092c8c25db1ac0de81c
-
-
+uuid = 'e591c074-0e91-4483-b3ac-a7b03d512acb'
+rpc_endpoint = 'http://e591c074-0e91-4483-b3ac-a7b03d512acb@18.157.198.111:5060'
+private_key = 0xc0dbb4a6d2fe14a182def90dfba34b0d
+player_address = 0x12c401cf37fe384a715ad5dd3114cede09b7de8119081ea9bd2edabc9f728fd
+contract_address = 0x57dbbcc4a0036dd5b06146cf366630b5398c3c35de403c657046d96dbcb990
 PRIME = 3618502788666131213697322783095070105623107215331596699973092056135872020481
 
 print("h")
@@ -40,13 +38,50 @@ async def run():
     contract = await Contract.from_address(contract_address, account_client)
 
     print(contract.functions)
-    prod = (3609145100 + 12345 + int(player_address, 16)) % PRIME
+    prod = (3609145100 + 12345 + player_address) % PRIME
     call = contract.functions['solve_step_1'].prepare(prod)
     tx_r = await account_client.execute(call, auto_estimate=True)
     await account_client.wait_for_tx(tx_r.transaction_hash)
     print(tx_r)
     print(tx_r.transaction_hash)
 
+    prod = ((1010886179 + 965647271) % PRIME + contract_address) % PRIME
+    call = contract.functions['solve_step_2'].prepare(prod)
+    tx_r = await account_client.execute(call, auto_estimate=True)
+    await account_client.wait_for_tx(tx_r.transaction_hash)
+    print(tx_r)
+    print(tx_r.transaction_hash)
+
+    ap_0 = 3
+    ap_1 = 4
+
+    ap_2 = ap_1*ap_0 % PRIME
+    ap_3 = ap_2 * ap_1 % PRIME
+    ap_4 = ap_3 * ap_2 % PRIME
+    ap_5 = ap_4 * ap_3 % PRIME
+
+    ap_6 = ap_4 + ap_2 % PRIME
+    ap_7 = ap_6 + ap_3 % PRIME
+
+    prod = ap_6*ap_7 % PRIME
+    call = contract.functions['solve_step_3'].prepare(prod)
+    tx_r = await account_client.execute(call, auto_estimate=True)
+    await account_client.wait_for_tx(tx_r.transaction_hash)
+    print(tx_r)
+    print(tx_r.transaction_hash)
+
+    prod = 84092830
+    call = contract.functions['solve_step_4'].prepare(prod)
+    tx_r = await account_client.execute(call, auto_estimate=True)
+    await account_client.wait_for_tx(tx_r.transaction_hash)
+    print(tx_r)
+    print(tx_r.transaction_hash)
+
+    call = contract.functions['solve'].prepare()
+    tx_r = await account_client.execute(call, auto_estimate=True)
+    await account_client.wait_for_tx(tx_r.transaction_hash)
+    print(tx_r)
+    print(tx_r.transaction_hash)
 
 if __name__ == "__main__":
     asyncio.run(run())

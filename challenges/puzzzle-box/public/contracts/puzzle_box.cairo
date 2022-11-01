@@ -113,7 +113,7 @@ func st_4_2(value: felt) -> (res: felt) {
 @external
 func solve_step_4{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(input: felt) -> (
     ) {
-    let (value) = st_4_2(12301342);
+    let (value) = st_4_2(12301342);  // 21835210
     with value {
         st_4_1(17329287);
     }
